@@ -21,6 +21,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import com.google.android.gms.common.ConnectionResult;
@@ -42,7 +43,7 @@ public class MapActivity extends LuckyActivity implements PlaceAutocompleteAdapt
         GoogleApiClient.ConnectionCallbacks,OnMapReadyCallback, TextWatcher,MapActivityView{
 
     @BindView(R.id.list_search)RecyclerView mRecyclerView;
-    @BindView(R.id.search_et)EditText mSearchEdittext;
+    @BindView(R.id.search_et)AutoCompleteTextView mSearchEdittext;
     @BindView(R.id.clear)ImageView mClear;
     private MapPresenter mPresenter;
     private MapInteractor mapInteractor;

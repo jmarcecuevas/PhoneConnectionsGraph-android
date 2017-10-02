@@ -134,7 +134,6 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
         return mPredictionHolder;
     }
 
-
     @Override
     public void onBindViewHolder(PlaceViewHolder mPredictionHolder, final int i) {
         mPredictionHolder.mAddress.setText(mResultList.get(i).description);
@@ -161,10 +160,10 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
     }
 
     public class PlaceViewHolder extends RecyclerView.ViewHolder {
-        public RelativeLayout mParentLayout;
-        public TextView mAddress;
+        private RelativeLayout mParentLayout;
+        private TextView mAddress;
 
-        public PlaceViewHolder(View itemView) {
+        private PlaceViewHolder(View itemView) {
             super(itemView);
             mParentLayout = (RelativeLayout)itemView.findViewById(R.id.predictedRow);
             mAddress = (TextView)itemView.findViewById(R.id.address);

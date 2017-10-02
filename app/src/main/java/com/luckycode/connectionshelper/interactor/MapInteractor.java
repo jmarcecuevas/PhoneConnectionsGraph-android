@@ -29,7 +29,7 @@ public class MapInteractor extends LuckyInteractor<MapPresenter> {
     public MapInteractor(DatabaseHelper dbHelper,PlaceListener listener){
         this.dbHelper=dbHelper;
         this.listener=listener;
-        setDaoPlace();
+        //setDaoPlace();
     }
 
     public void getPlaceByID(PlaceAutocomplete placeAutocomplete,GoogleApiClient googleApiClient){
@@ -42,7 +42,7 @@ public class MapInteractor extends LuckyInteractor<MapPresenter> {
                     Place place=places.get(0);
                     PlaceModel placeModel=new PlaceModel(place.getName(),place.getAddress(),place.getLocale().getCountry(),
                             place.getLatLng().latitude,place.getLatLng().longitude);
-                    storePlaceInDB(placeModel);
+                    //storePlaceInDB(placeModel);
                     listener.onSuccessPlace(places.get(0));
                 }else{
                     listener.onErrorPlace();
