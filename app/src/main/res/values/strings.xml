@@ -2,4 +2,5 @@
     <string name="app_name">ConnectionsHelper</string>
     <string name="title_activity_map">Map</string>
     <string name="enter_city_name_hint">Add a city</string>
+    <string name="settings">Settings</string>
 </resources>

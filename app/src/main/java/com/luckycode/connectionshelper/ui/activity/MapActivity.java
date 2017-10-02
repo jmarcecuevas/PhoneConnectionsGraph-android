@@ -1,5 +1,6 @@
 package com.luckycode.connectionshelper.ui.activity;
 
+import android.app.Dialog;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -16,13 +17,17 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import com.google.android.gms.common.ConnectionResult;
 import com.luckycode.connectionshelper.interactor.MapInteractor;
@@ -45,6 +50,7 @@ public class MapActivity extends LuckyActivity implements PlaceAutocompleteAdapt
     @BindView(R.id.list_search)RecyclerView mRecyclerView;
     @BindView(R.id.search_et)AutoCompleteTextView mSearchEdittext;
     @BindView(R.id.clear)ImageView mClear;
+    @BindView(R.id.menu_more)ImageButton menuMore;
     private MapPresenter mPresenter;
     private MapInteractor mapInteractor;
     private GoogleMap mMap;
@@ -127,6 +133,44 @@ public class MapActivity extends LuckyActivity implements PlaceAutocompleteAdapt
         mSearchEdittext.setText("");
         if(mAdapter!=null)
             mAdapter.clearList();
+    }
+
+    @OnClick(R.id.menu_more)
+    public void onMenuMoreClicked(View view){
+        PopupMenu popup = new PopupMenu(this, view);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.popup_menu, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.menu_settings:
+                        showSettingsDialog();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        popup.show();
+
+    }
+
+    public void showSettingsDialog(){
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_settings_custom);
+
+
+//        Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+//        // if button is clicked, close the custom dialog
+//        dialogButton.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.dismiss();
+//            }
+//        });
+
+        dialog.show();
     }
 
     @Override
