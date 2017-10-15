@@ -3,38 +3,43 @@ package com.luckycode.connectionshelper.model;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
+
 /**
  * Created by marcelocuevas on 9/30/17.
  */
 
-@DatabaseTable(tableName = "Places")
-public class PlaceModel {
-    @DatabaseField
+@DatabaseTable (tableName = "vertexes")
+public class Town implements Serializable {
+    @DatabaseField(generatedId = true)
     private String id;
     @DatabaseField
-    private CharSequence name;
-    @DatabaseField
-    private CharSequence address;
+    private String name;
     @DatabaseField
     private String country;
+    @DatabaseField
+    private long population;
     @DatabaseField
     private double lat;
     @DatabaseField
     private double lng;
+    private TownVertex parent;
 
-    public PlaceModel(CharSequence name, CharSequence address, String country, double lat, double lng){
+    public Town(String name, String country, long population, double lat, double lng){
         this.name=name;
-        this.address=address;
         this.country=country;
+        this.population=population;
         this.lat=lat;
         this.lng=lng;
     }
+
+    public Town(){}
 
     public String getId() {
         return id;
     }
 
-    public CharSequence getName() {
+    public String getName() {
         return name;
     }
 
@@ -46,12 +51,20 @@ public class PlaceModel {
         return lat;
     }
 
-    public CharSequence getAddress() {
-        return address;
-    }
-
     public String getCountry() {
         return country;
+    }
+
+    public long getPopulation() {
+        return population;
+    }
+
+    public void setParent(TownVertex parent) {
+        this.parent = parent;
+    }
+
+    public TownVertex getParent() {
+        return parent;
     }
 }
 

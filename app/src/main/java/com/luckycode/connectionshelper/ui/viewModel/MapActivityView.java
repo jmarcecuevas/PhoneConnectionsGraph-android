@@ -1,6 +1,7 @@
 package com.luckycode.connectionshelper.ui.viewModel;
 
-import com.google.android.gms.location.places.Place;
+import com.luckycode.connectionshelper.model.Town;
+import com.luckycode.connectionshelper.model.TownVertex;
 
 /**
  * Created by marcelocuevas on 10/1/17.
@@ -11,7 +12,7 @@ public interface MapActivityView {
     void hideClearButton();
     void showRecyclerView();
     void hideRecyclerView();
-    void updateMap(Place place);
+    void updateMap(TownVertex town);
     void filter(String s);
     void setAdapter();
 }

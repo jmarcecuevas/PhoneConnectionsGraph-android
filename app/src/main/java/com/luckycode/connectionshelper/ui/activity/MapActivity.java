@@ -1,13 +1,9 @@
 package com.luckycode.connectionshelper.ui.activity;
 
 import android.app.Dialog;
-import android.support.annotation.NonNull;
+import android.graphics.Color;
 import android.os.Bundle;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -15,7 +11,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import android.content.Intent;
+
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -26,11 +22,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.j256.ormlite.dao.Dao;
 import com.luckycode.connectionshelper.interactor.MapInteractor;
+import com.luckycode.connectionshelper.model.Edge;
+import com.luckycode.connectionshelper.model.Graph;
+import com.luckycode.connectionshelper.model.Town;
+import com.luckycode.connectionshelper.model.TownVertex;
 import com.luckycode.connectionshelper.ui.adapter.PlaceAutocompleteAdapter.PlaceAutocomplete;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -40,6 +42,8 @@ import com.luckycode.connectionshelper.presenter.MapPresenter;
 import com.luckycode.connectionshelper.ui.adapter.PlaceAutocompleteAdapter;
 import com.luckycode.connectionshelper.ui.viewModel.MapActivityView;
 import com.luckycode.connectionshelper.utils.KeyboardHelper;
+
+import java.sql.SQLException;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -51,8 +55,8 @@ public class MapActivity extends LuckyActivity implements PlaceAutocompleteAdapt
     @BindView(R.id.search_et)AutoCompleteTextView mSearchEdittext;
     @BindView(R.id.clear)ImageView mClear;
     @BindView(R.id.menu_more)ImageButton menuMore;
+    private Graph graph;
     private MapPresenter mPresenter;
-    private MapInteractor mapInteractor;
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     private PlaceAutocompleteAdapter mAdapter;
@@ -60,16 +64,18 @@ public class MapActivity extends LuckyActivity implements PlaceAutocompleteAdapt
 
     @Override
     protected void init() {
+        Bundle bundle= getIntent().getExtras();
+        graph= (Graph) bundle.getSerializable("GRAPH");
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, 0 /* clientId */, this)
+                .enableAutoManage(this, 0 , this)
                 .addApi(Places.GEO_DATA_API)
                 .build();
 
-        mPresenter=new MapPresenter(this,dbHelper);
+        mPresenter=new MapPresenter(this,getHelper(),graph);
 
         setRecyclerView();
         mSearchEdittext.addTextChangedListener(this);
@@ -83,19 +89,40 @@ public class MapActivity extends LuckyActivity implements PlaceAutocompleteAdapt
         mRecyclerView.setAdapter(mAdapter);
     }
 
+    public void drawRoute(Edge edge){
+        PolylineOptions rectOptions = new PolylineOptions()
+                .add(new LatLng(edge.getOrigin().getLat(),edge.getOrigin().getLng()))
+                .add(new LatLng(edge.getDestination().getLat(),edge.getDestination().getLng()))
+                .color(Color.RED);
+        mMap.addPolyline(rectOptions);
+    }
+
     @Override
     public void onPlaceClick(PlaceAutocomplete placeAutocomplete){
         mPresenter.handlePlaceClick(placeAutocomplete,mGoogleApiClient);
     }
 
+    public void drawInitMap(){
+        for(Edge edge:graph.getEdges())
+            drawRoute(edge);
+        for(TownVertex vertex:graph.getVertexes())
+            drawMarker(vertex);
+    }
+
+    private void drawMarker(TownVertex vertex) {
+        LatLng latLng=new LatLng(vertex.getLat(),vertex.getLng());
+        Marker marker=mMap.addMarker(new MarkerOptions().position(latLng).
+        title(vertex.getName()));
+        marker.showInfoWindow();
+    }
+
     @Override
-    public void updateMap(Place place) {
+    public void updateMap(TownVertex town) {
         if(mMap != null){
             mMap.clear();
-            LatLng latLng = place.getLatLng();
-            Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(place.getName().toString()));
-            marker.showInfoWindow();
+            LatLng latLng = new LatLng(town.getLat(),town.getLng());
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 5));
+            drawInitMap();
             KeyboardHelper.hideKeyboard(MapActivity.this);
         }
     }
@@ -153,23 +180,11 @@ public class MapActivity extends LuckyActivity implements PlaceAutocompleteAdapt
             }
         });
         popup.show();
-
     }
 
     public void showSettingsDialog(){
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_settings_custom);
-
-
-//        Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-//        // if button is clicked, close the custom dialog
-//        dialogButton.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dialog.dismiss();
-//            }
-//        });
-
         dialog.show();
     }
 
@@ -194,6 +209,7 @@ public class MapActivity extends LuckyActivity implements PlaceAutocompleteAdapt
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        drawInitMap();
     }
 
     @Override

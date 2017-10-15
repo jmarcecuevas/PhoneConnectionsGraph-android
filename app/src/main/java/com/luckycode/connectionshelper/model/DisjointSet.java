@@ -9,22 +9,22 @@ import java.util.ArrayList;
 public class DisjointSet {
 
     // Pointer to the graph's vertices
-    private ArrayList<Vertex> vertices;
+    private ArrayList<TownVertex> vertices;
 
     /**
-     * This is a helper class which allows a given ArrayList<Vertex> to be turned into a disjoint set
+     * This is a helper class which allows a given ArrayList<TownVertex> to be turned into a disjoint set
      * @param vertices The vertices which will make up the set
      */
-    public DisjointSet(ArrayList<Vertex> vertices){
+    public DisjointSet(ArrayList<TownVertex> vertices){
         this.vertices = vertices;
 
         // Iterates through vertices and makes every node it's own parent
-        for (Vertex v: vertices){
+        for (TownVertex v: vertices){
             v.setParent(v);
         }
     }
 
-    public Vertex find(Vertex v){
+    public TownVertex find(TownVertex v){
 
         // If the node is it's own parent, the root has been found
         if (v.getParent().equals(v)){
@@ -35,11 +35,11 @@ public class DisjointSet {
         return find(v.getParent());
     }
 
-    public void union(Vertex v1, Vertex v2){
+    public void union(TownVertex v1, TownVertex v2){
 
         // Finds the two roots of the given vertices
-        Vertex v1Root = find(v1);
-        Vertex v2Root = find(v2);
+        TownVertex v1Root = find(v1);
+        TownVertex v2Root = find(v2);
 
         // If the roots are the same, do not merge
         if (v1Root.equals(v2Root)){

@@ -17,7 +17,6 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBuffer;
-import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.luckycode.connectionshelper.R;
@@ -115,9 +114,8 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
                 AutocompletePrediction prediction = iterator.next();
                 // Get the details of this prediction and copy it into a new PlaceAutocomplete object.
                 resultList.add(new PlaceAutocomplete(prediction.getPlaceId(),
-                        prediction.getPrimaryText(STYLE_BOLD)));
+                        prediction.getPrimaryText(STYLE_BOLD),prediction.getSecondaryText(STYLE_BOLD)));
             }
-
             // Release the buffer now that all data has been copied.
             autocompletePredictions.release();
 
@@ -136,7 +134,8 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
 
     @Override
     public void onBindViewHolder(PlaceViewHolder mPredictionHolder, final int i) {
-        mPredictionHolder.mAddress.setText(mResultList.get(i).description);
+        mPredictionHolder.mAddress.setText(mResultList.get(i).name);
+        mPredictionHolder.mDetail.setText(mResultList.get(i).detail);
 
         mPredictionHolder.mParentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,11 +161,13 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
     public class PlaceViewHolder extends RecyclerView.ViewHolder {
         private RelativeLayout mParentLayout;
         private TextView mAddress;
+        private TextView mDetail;
 
         private PlaceViewHolder(View itemView) {
             super(itemView);
             mParentLayout = (RelativeLayout)itemView.findViewById(R.id.predictedRow);
             mAddress = (TextView)itemView.findViewById(R.id.address);
+            mDetail=(TextView)itemView.findViewById(R.id.detail);
         }
     }
 
@@ -176,16 +177,18 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
     public class PlaceAutocomplete {
 
         public CharSequence placeId;
-        public CharSequence description;
+        public CharSequence name;
+        public CharSequence detail;
 
-        PlaceAutocomplete(CharSequence placeId, CharSequence description) {
+        PlaceAutocomplete(CharSequence placeId, CharSequence name,CharSequence detail) {
             this.placeId = placeId;
-            this.description = description;
+            this.name = name;
+            this.detail=detail;
         }
 
         @Override
         public String toString() {
-            return description.toString();
+            return name.toString();
         }
     }
 

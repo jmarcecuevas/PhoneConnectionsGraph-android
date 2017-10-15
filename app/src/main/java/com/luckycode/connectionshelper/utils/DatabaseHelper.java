@@ -7,7 +7,8 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import com.luckycode.connectionshelper.model.PlaceModel;
+import com.luckycode.connectionshelper.model.Edge;
+import com.luckycode.connectionshelper.model.TownVertex;
 
 import java.sql.SQLException;
 
@@ -19,7 +20,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABASE_NAME = "places.db";
     private static final int DATABASE_VERSION = 1;
 
-    private Dao<PlaceModel, Integer> daoPlaces;
+    private Dao<TownVertex,Integer> daoVertexes;
+    private Dao<Edge,Integer> daoEdges;
 
 
     public DatabaseHelper(Context context) {
@@ -29,7 +31,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         try {
-            TableUtils.createTable(connectionSource, PlaceModel.class);
+            TableUtils.createTable(connectionSource,TownVertex.class);
+            TableUtils.createTable(connectionSource,Edge.class);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -40,16 +43,24 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         onCreate(database, connectionSource);
     }
 
-    public Dao<PlaceModel, Integer> getDaoPlace() throws SQLException {
-        if (daoPlaces == null) {
-            daoPlaces = getDao(PlaceModel.class);
+    public Dao<TownVertex,Integer> getDaoVertexes() throws SQLException{
+        if(daoVertexes == null){
+            daoVertexes = getDao(TownVertex.class);
         }
-        return daoPlaces;
+        return daoVertexes;
+    }
+
+    public Dao<Edge,Integer> getDaoEdges() throws SQLException{
+        if(daoEdges == null){
+            daoEdges = getDao(Edge.class);
+        }
+        return daoEdges;
     }
 
     @Override
     public void close() {
         super.close();
-        daoPlaces = null;
+        daoVertexes=null;
+        daoEdges=null;
     }
 }

@@ -58,6 +58,45 @@
         android:layout_height="match_parent"
         tools:context="com.luckycode.connectionshelper.ui.activity.MapActivity" />
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/cardSearch"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="74dp">
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/graphCheckBox"/>
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Connected graph"
+            android:paddingLeft="3dp"
+            android:layout_toRightOf="@+id/graphCheckBox"
+            android:lines="1"/>
+        
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/solutionCheckBox"
+            android:layout_below="@+id/graphCheckBox"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Solution"
+            android:paddingLeft="3dp"
+            android:layout_toRightOf="@+id/solutionCheckBox"
+            android:layout_alignTop="@+id/solutionCheckBox"
+            android:lines="1"/>
+
+
+    </RelativeLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_search"
         android:layout_width="match_parent"
