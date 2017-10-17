@@ -31,62 +31,62 @@
     "lat": "-34.4529709",
     "lng": "-58.64298660000001"
   },
-  {
-    "id": "ChIJM7ked5y1vJURaYzXlrUTMWs",
-    "name": "Palermo",
-    "country": "Argentina",
-    "population": 225970,
-    "lat": "-34.5711496",
-    "lng": "-58.42329659999999"
-  },
-  {
-    "id": "ChIJ0WGkg4FEzpQRrlsz_whLqZs",
-    "name": "São Paulo",
-    "country": "Brasil",
-    "population": 12000000,
-    "lat": "-23.550519899999998",
-    "lng": "-46.6333094"
-  },
-  {
-    "id": "ChIJMyzPysqQpgARlznSOl55NVs",
-    "name": "Belo Horizonte",
-    "country": "Brasil",
-    "population": 1433000,
-    "lat": "-19.9166813",
-    "lng": "-43.9344931"
-  },
-  {
-    "id": "ChIJ0_c7xv-An5URmexbNS4bMms",
-    "name": "Montevideo",
-    "country": "Uruguay",
-    "population": 1300000,
-    "lat": "-34.9011127",
-    "lng": "-56.164531399999994"
-  },
-  {
-    "id": "ChIJvQvEyJ4FdZURk8_TwoMB3Zs",
-    "name": "Punta del Este",
-    "country": "Uruguay",
-    "population": 9000,
-    "lat": "-34.936878899999996",
-    "lng": "-54.9281496"
-  },
-  {
-    "id": "ChIJVRLU6oTeiZYRP0E933beX44",
-    "name": "Viña del Mar",
-    "country": "Chile",
-    "population": 324000,
-    "lat": "-33.01534809999999",
-    "lng": "-71.55002759999999"
-  },
-  {
-    "id": "ChIJx84g3uPdiZYRdpvhv4w6Cus",
-    "name": "Valparaíso",
-    "country": "Chile",
-    "population": 248070,
-    "lat": "-33.04723799999999",
-    "lng": "-71.61268849999999"
-  },
+//  {
+//    "id": "ChIJM7ked5y1vJURaYzXlrUTMWs",
+//    "name": "Palermo",
+//    "country": "Argentina",
+//    "population": 225970,
+//    "lat": "-34.5711496",
+//    "lng": "-58.42329659999999"
+//  }
+//  {
+//    "id": "ChIJ0WGkg4FEzpQRrlsz_whLqZs",
+//    "name": "São Paulo",
+//    "country": "Brasil",
+//    "population": 12000000,
+//    "lat": "-23.550519899999998",
+//    "lng": "-46.6333094"
+//  },
+//  {
+//    "id": "ChIJMyzPysqQpgARlznSOl55NVs",
+//    "name": "Belo Horizonte",
+//    "country": "Brasil",
+//    "population": 1433000,
+//    "lat": "-19.9166813",
+//    "lng": "-43.9344931"
+//  },
+//  {
+//    "id": "ChIJ0_c7xv-An5URmexbNS4bMms",
+//    "name": "Montevideo",
+//    "country": "Uruguay",
+//    "population": 1300000,
+//    "lat": "-34.9011127",
+//    "lng": "-56.164531399999994"
+//  },
+//  {
+//    "id": "ChIJvQvEyJ4FdZURk8_TwoMB3Zs",
+//    "name": "Punta del Este",
+//    "country": "Uruguay",
+//    "population": 9000,
+//    "lat": "-34.936878899999996",
+//    "lng": "-54.9281496"
+//  },
+//  {
+//    "id": "ChIJVRLU6oTeiZYRP0E933beX44",
+//    "name": "Viña del Mar",
+//    "country": "Chile",
+//    "population": 324000,
+//    "lat": "-33.01534809999999",
+//    "lng": "-71.55002759999999"
+//  },
+//  {
+//    "id": "ChIJx84g3uPdiZYRdpvhv4w6Cus",
+//    "name": "Valparaíso",
+//    "country": "Chile",
+//    "population": 248070,
+//    "lat": "-33.04723799999999",
+//    "lng": "-71.61268849999999"
+//  },
   {
     "id": "ChIJDYullY-Xq5YRBiPHJzYJev4",
     "name": "Calama",
@@ -94,13 +94,13 @@
     "population": 149000,
     "lat": "-22.4543923",
     "lng": "-68.9293819"
-  },
-  {
-    "id": "ChIJHWEmhdK1vJURaQDH3amFtbw",
-    "name": "Belgrano",
-    "country": "Argentina",
-    "population": 126000,
-    "lat": "-34.562084399999996",
-    "lng": "-58.456686399999995"
   }
+//  {
+//    "id": "ChIJHWEmhdK1vJURaQDH3amFtbw",
+//    "name": "Belgrano",
+//    "country": "Argentina",
+//    "population": 126000,
+//    "lat": "-34.562084399999996",
+//    "lng": "-58.456686399999995"
+//  }
 ]

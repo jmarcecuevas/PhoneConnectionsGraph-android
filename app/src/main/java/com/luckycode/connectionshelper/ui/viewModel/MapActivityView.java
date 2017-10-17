@@ -1,6 +1,6 @@
 package com.luckycode.connectionshelper.ui.viewModel;
 
-import com.luckycode.connectionshelper.model.Town;
+import com.google.android.gms.maps.model.LatLng;
 import com.luckycode.connectionshelper.model.TownVertex;
 
 /**
@@ -13,6 +13,11 @@ public interface MapActivityView {
     void showRecyclerView();
     void hideRecyclerView();
     void updateMap(TownVertex town);
+    void drawRoute(LatLng from,LatLng to,int color);
+    void drawMarker(LatLng position,String title);
+    void showRecalculatedGraph();
+    void showTotalCost(String cost);
+    void showSettingsDialog(String normalCost,String extraDiff,String extraLargeDistance);
     void filter(String s);
     void setAdapter();
 }

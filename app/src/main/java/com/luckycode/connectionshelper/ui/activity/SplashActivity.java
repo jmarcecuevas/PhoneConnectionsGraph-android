@@ -19,8 +19,6 @@ import java.util.TimerTask;
 
 public class SplashActivity extends LuckyActivity implements SplashView{
     private SplashPresenter mPresenter;
-    private List<TownVertex> vertexes;
-    private List<Edge> edges;
 
     @Override
     protected void init() {

@@ -3,16 +3,15 @@ package com.luckycode.connectionshelper.interactor;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.j256.ormlite.dao.Dao;
 import com.luckycode.connectionshelper.common.LuckyInteractor;
 import com.luckycode.connectionshelper.model.Edge;
-import com.luckycode.connectionshelper.model.Town;
 import com.luckycode.connectionshelper.model.TownVertex;
 import com.luckycode.connectionshelper.presenter.SplashPresenter;
 import com.luckycode.connectionshelper.utils.DatabaseHelper;
+import com.luckycode.connectionshelper.utils.SettingsManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,43 +28,27 @@ import java.util.Set;
  */
 
 public class MainInteractor extends LuckyInteractor<SplashPresenter> {
-
-    private static final String PREF_NAME="MyPreferences";
-    private static final String FIRST_TIME="firstTime";
     private static final String TOWN_JSON_FILE_NAME="towns.json";
-
     private Context context;
     private DatabaseHelper dbHelper;
-    private SharedPreferences prefs;
-    private SharedPreferences.Editor editor;
+    private SettingsManager settingsManager;
     private InteractorListener listener;
 
     public MainInteractor(Context context, DatabaseHelper dbHelper, InteractorListener listener){
         this.dbHelper=dbHelper;
         this.context=context;
         this.listener=listener;
-        prefs=context.getSharedPreferences(PREF_NAME,Context.MODE_PRIVATE);
-        editor=prefs.edit();
+        settingsManager=new SettingsManager(context);
     }
 
     public void loadDatabaseData() {
-        if(isFirstTime()){
+        if(settingsManager.isFirstTime()){
             storeLocalJSONIntoDatabase();
-            setNoFirstTime();
+            settingsManager.setNoFirstTime();
         }else{
             Set<TownVertex> townVertexes= new HashSet<>(getTowns());
-            Set<Edge> edges= new HashSet<>(getEdges());
-            listener.onDataLoaded(townVertexes,edges);
+            listener.onDataLoaded(townVertexes);
         }
-    }
-
-    public void setNoFirstTime(){
-        editor.putBoolean(FIRST_TIME,false);
-        editor.commit();
-    }
-
-    private boolean isFirstTime(){
-        return prefs.getBoolean(FIRST_TIME,true);
     }
 
     public void storeEdgesInDatabase(Set<Edge> edges){
@@ -75,6 +58,17 @@ public class MainInteractor extends LuckyInteractor<SplashPresenter> {
                 dao.create(edge);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void storeVertexesInDatabase(Set<TownVertex> vertexes){
+        try {
+            Dao dao=dbHelper.getDaoVertexes();
+            for(TownVertex vertex:vertexes){
+                dao.create(vertex);
+            }
+        }catch (SQLException e){
             e.printStackTrace();
         }
     }
@@ -126,9 +120,20 @@ public class MainInteractor extends LuckyInteractor<SplashPresenter> {
         return null;
     }
 
-    public interface InteractorListener{
-        void onLocalJSONStored(List<TownVertex> towns);
-        void onDataLoaded(Set<TownVertex> vertexes,Set<Edge> edges);
+    public double getNormalCost(){
+        return settingsManager.getNormalCost();
     }
 
+    public double getExtraLargeDistance(){
+        return settingsManager.getExtraCostForDistanceGreaterThan200();
+    }
+
+    public double getExtraDifferentCountries(){
+        return settingsManager.getExtraCostForDifferentCountries();
+    }
+
+    public interface InteractorListener{
+        void onLocalJSONStored(List<TownVertex> towns);
+        void onDataLoaded(Set<TownVertex> vertexes);
+    }
 }

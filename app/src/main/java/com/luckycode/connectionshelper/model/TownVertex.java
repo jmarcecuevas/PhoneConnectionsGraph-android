@@ -19,14 +19,18 @@ public class TownVertex implements Serializable{
     @DatabaseField
     private String country;
     @DatabaseField
-    private long population;
+    private int population;
     @DatabaseField
     private double lat;
     @DatabaseField
     private double lng;
     private TownVertex parent;
 
-    public TownVertex(String id,String name, String country, long population, double lat, double lng){
+    public TownVertex(){
+
+    }
+
+    public TownVertex(String id,String name, String country, int population, double lat, double lng){
         this.id=id;
         this.name=name;
         this.country=country;
@@ -35,20 +39,8 @@ public class TownVertex implements Serializable{
         this.lng=lng;
     }
 
-    public TownVertex(){
-
-    }
-
-    public long getPopulation() {
-        return population;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public double getLat() {
-        return lat;
+    public boolean hasSameCountryAs(TownVertex townVertex){
+        return this.country.equals(townVertex.getCountry());
     }
 
     @Override
@@ -64,6 +56,10 @@ public class TownVertex implements Serializable{
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+    public double getLat() {
+        return lat;
     }
 
     public double getLng() {
@@ -82,7 +78,15 @@ public class TownVertex implements Serializable{
         return parent;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
     public void setParent(TownVertex parent) {
         this.parent = parent;
+    }
+
+    public int getPopulation() {
+        return population;
     }
 }

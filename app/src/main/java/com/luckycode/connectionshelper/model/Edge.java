@@ -1,10 +1,15 @@
 package com.luckycode.connectionshelper.model;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.io.Serializable;
+
+import im.delight.android.location.SimpleLocation;
 
 /**
  * Created by marcelocuevas on 9/30/17.
@@ -17,31 +22,36 @@ public class Edge implements Comparable<Edge>,Serializable{
     @DatabaseField (dataType = DataType.SERIALIZABLE)
     private TownVertex destination;
     @DatabaseField
-    private int weight;
+    private double weight;
 
     public Edge(){}
 
-    public Edge(TownVertex origin, TownVertex destination, int weight) {
-        this.weight = weight;
+    public Edge(TownVertex origin, TownVertex destination,double normalCost,
+                double extraDiff,double extraLargeDistance) {
         this.origin = origin;
         this.destination = destination;
+        setWeight(normalCost,extraDiff,extraLargeDistance);
     }
 
-    public int getWeight() {
-        return weight;
+    public double getDistanceInKms() {
+        return SimpleLocation.calculateDistance(origin.getLat(),origin.getLng(),
+                destination.getLat(),destination.getLng())/1000;
     }
 
-    public TownVertex getDestination() {
-        return destination;
+    public boolean vertexesHaveSameCountry(){
+        return origin.hasSameCountryAs(destination);
     }
 
-    public TownVertex getOrigin() {
-        return origin;
+    public boolean distanceIsGreaterThan200(){
+        return getDistanceInKms()>200;
     }
 
-    @Override
-    public int compareTo(Edge e) {
-        return this.weight - e.weight;
+    public void setWeight(double normalCost,double extraDiff,double extraLargeDistance){
+        weight=getDistanceInKms()*normalCost;
+        if(!vertexesHaveSameCountry())
+            weight+=extraDiff;
+        if(distanceIsGreaterThan200())
+            weight+=extraLargeDistance;
     }
 
     @Override
@@ -63,4 +73,22 @@ public class Edge implements Comparable<Edge>,Serializable{
         result = 31 * result + destination.hashCode();
         return result;
     }
+
+    @Override
+    public int compareTo(Edge e) {
+        return (int)(this.weight - e.weight);
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public TownVertex getDestination() {
+        return destination;
+    }
+
+    public TownVertex getOrigin() {
+        return origin;
+    }
+
 }

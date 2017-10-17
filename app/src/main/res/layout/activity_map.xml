@@ -58,7 +58,7 @@
         android:layout_height="match_parent"
         tools:context="com.luckycode.connectionshelper.ui.activity.MapActivity" />
 
-    <RelativeLayout
+    <android.support.v7.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -66,36 +66,43 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="74dp">
 
-        <CheckBox
+        <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/graphCheckBox"/>
-        
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Connected graph"
-            android:paddingLeft="3dp"
-            android:layout_toRightOf="@+id/graphCheckBox"
-            android:lines="1"/>
-        
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/solutionCheckBox"
-            android:layout_below="@+id/graphCheckBox"/>
+            android:id="@+id/viewOptions">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Solution"
-            android:paddingLeft="3dp"
-            android:layout_toRightOf="@+id/solutionCheckBox"
-            android:layout_alignTop="@+id/solutionCheckBox"
-            android:lines="1"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Completed graph"
+                android:id="@+id/graphRB"/>
 
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/graphRB"
+                android:id="@+id/solutionRB"
+                android:text="Solution"/>
 
-    </RelativeLayout>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/solutionRB"
+                android:id="@+id/vertexesRB"
+                android:checked="true"
+                android:text="Only vertexes"/>
+
+        </RadioGroup>
+
+    </android.support.v7.widget.CardView>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:indeterminate="true"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_search"

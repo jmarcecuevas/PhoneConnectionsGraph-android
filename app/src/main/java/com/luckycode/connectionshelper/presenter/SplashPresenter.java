@@ -17,7 +17,7 @@ import java.util.Set;
  * Created by marcelocuevas on 10/14/17.
  */
 
-public class SplashPresenter extends LuckyPresenter<SplashView> implements MainInteractor.InteractorListener{
+public class SplashPresenter extends LuckyPresenter<SplashView> implements MainInteractor.InteractorListener,Graph.Listener{
     private MainInteractor interactor;
 
     public SplashPresenter(SplashView mView, Context context,DatabaseHelper dbHelper) {
@@ -32,19 +32,43 @@ public class SplashPresenter extends LuckyPresenter<SplashView> implements MainI
     @Override
     public void onLocalJSONStored(List<TownVertex> towns) {
         Graph graph=new Graph();
+
         for(TownVertex town:towns){
             graph.addVertex(town);
-            graph.updateEdges(town);
+            graph.updateEdges(town,interactor.getNormalCost(),
+                    interactor.getExtraDifferentCountries(),
+                    interactor.getExtraLargeDistance());
         }
+
         interactor.storeEdgesInDatabase(graph.getEdges());
+        interactor.storeVertexesInDatabase(graph.getVertexes());
         getView().onGraphReady(graph);
     }
 
     @Override
-    public void onDataLoaded(Set<TownVertex> vertexes, Set<Edge> edges) {
+    public void onDataLoaded(Set<TownVertex> vertexes) {
         Graph graph=new Graph();
         graph.setVertexes(vertexes);
-        graph.setEdges(edges);
+        for(TownVertex vertex:vertexes)
+            graph.updateEdges(vertex,interactor.getNormalCost(),
+                    interactor.getExtraDifferentCountries(),
+                    interactor.getExtraLargeDistance());
+
         getView().onGraphReady(graph);
+    }
+
+    @Override
+    public void onEdgeAdded(Edge edge) {
+
+    }
+
+    @Override
+    public void onVertexAdded(TownVertex townVertex) {
+
+    }
+
+    @Override
+    public void onEdgesWeightsRecalculated(Set<Edge> edges) {
+
     }
 }

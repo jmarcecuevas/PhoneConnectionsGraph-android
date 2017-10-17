@@ -40,14 +40,11 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
     private static final CharacterStyle STYLE_BOLD = new StyleSpan(Typeface.BOLD);
     private ArrayList<PlaceAutocomplete> mResultList;
     private GoogleApiClient googleApiClient;
-    private LatLngBounds bounds;
     private AutocompleteFilter mPlaceFilter;
 
-    public PlaceAutocompleteAdapter(Context context, GoogleApiClient googleApiClient,
-                                    LatLngBounds bounds, AutocompleteFilter filter){
+    public PlaceAutocompleteAdapter(Context context, GoogleApiClient googleApiClient, AutocompleteFilter filter){
         this.context = context;
         this.googleApiClient = googleApiClient;
-        this.bounds = bounds;
         mPlaceFilter = filter;
         this.listener = (PlaceAutoCompleteInterface) this.context;
     }
@@ -56,10 +53,6 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
         if(mResultList!=null && mResultList.size()>0){
             mResultList.clear();
         }
-    }
-
-    public void setBounds(LatLngBounds bounds) {
-        this.bounds = bounds;
     }
 
     @Override
@@ -82,9 +75,6 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 if (results != null && results.count > 0) {
                     notifyDataSetChanged();
-                } else {
-                    // The API did not return any results, invalidate the data set.
-                    //notifyDataSetInvalidated();
                 }
             }
         };
@@ -93,10 +83,8 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
 
     private ArrayList<PlaceAutocomplete> getAutocomplete(CharSequence constraint) {
         if (googleApiClient.isConnected()) {
-
-            PendingResult<AutocompletePredictionBuffer> results = Places.GeoDataApi
-                            .getAutocompletePredictions(googleApiClient, constraint.toString(),
-                                    bounds, mPlaceFilter);
+            PendingResult<AutocompletePredictionBuffer> results= Places.GeoDataApi
+                    .getAutocompletePredictions(googleApiClient,constraint.toString(),null,mPlaceFilter);
 
             AutocompletePredictionBuffer autocompletePredictions = results
                     .await(60, TimeUnit.SECONDS);
@@ -158,16 +146,16 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
         return mResultList.get(position);
     }
 
-    public class PlaceViewHolder extends RecyclerView.ViewHolder {
+    class PlaceViewHolder extends RecyclerView.ViewHolder {
         private RelativeLayout mParentLayout;
         private TextView mAddress;
         private TextView mDetail;
 
         private PlaceViewHolder(View itemView) {
             super(itemView);
-            mParentLayout = (RelativeLayout)itemView.findViewById(R.id.predictedRow);
-            mAddress = (TextView)itemView.findViewById(R.id.address);
-            mDetail=(TextView)itemView.findViewById(R.id.detail);
+            mParentLayout = itemView.findViewById(R.id.predictedRow);
+            mAddress = itemView.findViewById(R.id.address);
+            mDetail= itemView.findViewById(R.id.detail);
         }
     }
 
@@ -175,7 +163,6 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
      * Holder for Places Geo Data Autocomplete API results.
      */
     public class PlaceAutocomplete {
-
         public CharSequence placeId;
         public CharSequence name;
         public CharSequence detail;
@@ -191,7 +178,6 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
             return name.toString();
         }
     }
-
 
     public interface PlaceAutoCompleteInterface{
         void onPlaceClick(PlaceAutocomplete placeAutocomplete);

@@ -46,12 +46,12 @@
             android:id="@+id/differentCitiesTV"
             android:paddingTop="10dp"
             android:layout_below="@+id/betweenTwoCitiesTV"
-            android:text="Adicional para localidades de distintas provincias"/>
+            android:text="Adicional para localidades de distintos paises"/>
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/extraDifferentProvs"
+            android:id="@+id/extraDifferentCountries"
             android:inputType="number"
             android:layout_below="@+id/normalCost"
             android:layout_alignParentEnd="true"
@@ -67,20 +67,11 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/extraMoreThan200km"
+            android:id="@+id/extraLargeDistance"
             android:inputType="number"
-            android:layout_below="@+id/extraDifferentProvs"
+            android:layout_below="@+id/extraDifferentCountries"
             android:layout_alignParentEnd="true"
             android:hint="$" />
-
-        <!--<Button-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="OK"-->
-            <!--android:layout_below="@+id/differentCitiesTV"-->
-            <!--android:layout_marginTop="50dp"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--/>-->
 
     </android.support.percent.PercentRelativeLayout>
 
