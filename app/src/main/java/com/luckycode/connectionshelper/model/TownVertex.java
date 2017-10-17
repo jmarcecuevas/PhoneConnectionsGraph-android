@@ -86,7 +86,19 @@ public class TownVertex implements Serializable{
         this.parent = parent;
     }
 
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
     public int getPopulation() {
         return population;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
     }
 }
