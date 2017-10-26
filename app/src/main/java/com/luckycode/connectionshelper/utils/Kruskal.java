@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by marcelocuevas on 9/30/17.
@@ -17,10 +18,7 @@ import java.util.List;
 public class Kruskal{
 
     public static ArrayList<Edge> execute(Graph g) {
-        Graph mGraph= new Graph();
-        mGraph.setVertexes(new HashSet<>(g.getVertexes()));
-        mGraph.setEdges(new HashSet<>(g.getEdges()));
-
+        Graph mGraph=new Graph(g.getVertexes(),g.getEdges());
         ArrayList<Edge> mst = new ArrayList<>();
 
         // Sorts the edges from smallest to largest
@@ -42,6 +40,7 @@ public class Kruskal{
         }
         return mst;
     }
+
 
     public static double calculateMSTCost(List<Edge> edges){
         double count=0;

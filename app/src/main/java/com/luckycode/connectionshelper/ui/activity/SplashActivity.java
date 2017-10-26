@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.luckycode.connectionshelper.R;
 import com.luckycode.connectionshelper.common.LuckyActivity;
+import com.luckycode.connectionshelper.interactor.MainInteractor;
 import com.luckycode.connectionshelper.model.Edge;
 import com.luckycode.connectionshelper.model.Graph;
 import com.luckycode.connectionshelper.model.TownVertex;
@@ -22,7 +23,8 @@ public class SplashActivity extends LuckyActivity implements SplashView{
 
     @Override
     protected void init() {
-        mPresenter=new SplashPresenter(this,this,getHelper());
+        MainInteractor interactor=new MainInteractor(this,getHelper());
+        mPresenter=new SplashPresenter(this,interactor);
         mPresenter.loadData();
     }
 

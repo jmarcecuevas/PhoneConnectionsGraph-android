@@ -32,10 +32,13 @@ public class MapInteractor extends LuckyInteractor<MapPresenter> {
     private DatabaseHelper dbHelper;
     private SettingsManager settingsManager;
 
-    public MapInteractor(Context context, DatabaseHelper dbHelper, Listener listener){
+    public MapInteractor(Context context, DatabaseHelper dbHelper){
         this.dbHelper=dbHelper;
-        this.listener=listener;
         settingsManager=new SettingsManager(context);
+    }
+
+    public void setListener(Listener listener) {
+        this.listener = listener;
     }
 
     public void getPlaceByID(PlaceAutocomplete placeAutocomplete, GoogleApiClient googleApiClient, final int population){
@@ -115,7 +118,6 @@ public class MapInteractor extends LuckyInteractor<MapPresenter> {
     public double getExtraLargeDistance(){
         return settingsManager.getExtraCostForDistanceGreaterThan200();
     }
-
 
 
     public interface Listener {

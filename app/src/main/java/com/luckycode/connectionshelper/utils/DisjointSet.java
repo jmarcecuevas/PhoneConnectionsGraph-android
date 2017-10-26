@@ -44,4 +44,8 @@ public class DisjointSet {
         v1Root.setParent(v2Root);
         vertices.remove(v1);
     }
+
+    public Set<TownVertex> getVertices() {
+        return vertices;
+    }
 }

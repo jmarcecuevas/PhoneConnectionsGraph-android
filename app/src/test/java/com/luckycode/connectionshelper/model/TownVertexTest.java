@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
  */
 public class TownVertexTest {
     private TownVertex sanMiguelVertex,morenoVertex,
-        pilarVertex;
+        pilarVertex,otherVertex;
 
     @Before
     public void setUp() throws Exception {
@@ -22,19 +22,23 @@ public class TownVertexTest {
 
         pilarVertex=new TownVertex("ChIJAyA9ZLacvJURNrY09gIE2qg","Pilar","Argentina",244244,
                 -34.4778620,-58.9091671);
+
+        otherVertex=new TownVertex("ChIJAyA9ZLacvJURNrY09gIE2qg","Asunción","Paraguay",2424224,-34.66,-58.9959);
     }
 
     @Test
-    public void sameCountryTest() throws Exception {
+    public void sameCountryTest() {
         assertTrue(morenoVertex.hasSameCountryAs(sanMiguelVertex));
         assertTrue(sanMiguelVertex.hasSameCountryAs(pilarVertex));
         assertTrue(pilarVertex.hasSameCountryAs(morenoVertex));
+        assertFalse(pilarVertex.hasSameCountryAs(otherVertex));
     }
 
     @Test
-    public void equalsTest() throws Exception {
+    public void equalsTest()  {
         assertFalse(pilarVertex.equals(morenoVertex));
         assertFalse(morenoVertex.equals(sanMiguelVertex));
         assertFalse(sanMiguelVertex.equals(pilarVertex));
+        assertTrue(pilarVertex.equals(otherVertex)); //Son iguales porque tienen el mismo ID
     }
 }

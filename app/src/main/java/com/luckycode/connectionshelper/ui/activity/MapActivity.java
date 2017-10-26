@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.luckycode.connectionshelper.interactor.MapInteractor;
 import com.luckycode.connectionshelper.model.Edge;
 import com.luckycode.connectionshelper.model.Graph;
 import com.luckycode.connectionshelper.model.TownVertex;
@@ -64,6 +65,7 @@ public class MapActivity extends LuckyActivity implements PlaceAutocompleteAdapt
     @BindView(R.id.vertexesRB)RadioButton vertexesRB;
     private Graph graph;
     private MapPresenter mPresenter;
+    private MapInteractor mInteractor;
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     private PlaceAutocompleteAdapter mAdapter;
@@ -78,7 +80,8 @@ public class MapActivity extends LuckyActivity implements PlaceAutocompleteAdapt
         initGoogleClient();
         setRecyclerView();
         initListeners();
-        mPresenter=new MapPresenter(this,this,getHelper(),graph);
+        mInteractor=new MapInteractor(this,getHelper());
+        mPresenter=new MapPresenter(this,graph,mInteractor);
     }
 
     public void printGraphInfo(Graph graph){
@@ -252,7 +255,7 @@ public class MapActivity extends LuckyActivity implements PlaceAutocompleteAdapt
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        mPresenter.onTextChanged(s,count);
+        mPresenter.onTextChanged(s);
     }
 
     @Override

@@ -25,6 +25,11 @@ public class Graph implements Serializable{
         edges = new HashSet<>();
     }
 
+   public Graph(Set<TownVertex> vertexes,Set<Edge> edges){
+       this.vertexes=new HashSet<>(vertexes);
+       this.edges=new HashSet<>(edges);
+   }
+
     public void addVertex(TownVertex townVertex){
         if(vertexes.add(townVertex)) {
             if(listener!=null)
@@ -32,7 +37,7 @@ public class Graph implements Serializable{
         }
     }
 
-    private void addEdge(TownVertex n1, TownVertex n2,double normalCost,double extraDiff,
+    public void addEdge(TownVertex n1, TownVertex n2,double normalCost,double extraDiff,
                          double extraLargeDistance){
         Edge edge=new Edge(n1,n2,normalCost,extraDiff,extraLargeDistance);
         if(edges.add(edge)) {

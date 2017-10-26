@@ -19,10 +19,13 @@ import java.util.Set;
 
 public class SplashPresenter extends LuckyPresenter<SplashView> implements MainInteractor.InteractorListener,Graph.Listener{
     private MainInteractor interactor;
+    private Graph graph;
 
-    public SplashPresenter(SplashView mView, Context context,DatabaseHelper dbHelper) {
+    public SplashPresenter(SplashView mView,MainInteractor interactor) {
         super(mView);
-        interactor=new MainInteractor(context,dbHelper,this);
+        this.interactor=interactor;
+        this.interactor.setListener(this);
+        graph=new Graph();
     }
 
     public void loadData() {
@@ -31,15 +34,7 @@ public class SplashPresenter extends LuckyPresenter<SplashView> implements MainI
 
     @Override
     public void onLocalJSONStored(List<TownVertex> towns) {
-        Graph graph=new Graph();
-
-        for(TownVertex town:towns){
-            graph.addVertex(town);
-            graph.updateEdges(town,interactor.getNormalCost(),
-                    interactor.getExtraDifferentCountries(),
-                    interactor.getExtraLargeDistance());
-        }
-
+        createGraph(towns);
         interactor.storeEdgesInDatabase(graph.getEdges());
         interactor.storeVertexesInDatabase(graph.getVertexes());
         getView().onGraphReady(graph);
@@ -70,5 +65,14 @@ public class SplashPresenter extends LuckyPresenter<SplashView> implements MainI
     @Override
     public void onEdgesWeightsRecalculated(Set<Edge> edges) {
 
+    }
+
+    public void createGraph(List<TownVertex> vertexes){
+        for(TownVertex vertex:vertexes){
+            graph.addVertex(vertex);
+            graph.updateEdges(vertex,interactor.getNormalCost(),
+                    interactor.getExtraDifferentCountries(),
+                    interactor.getExtraLargeDistance());
+        }
     }
 }

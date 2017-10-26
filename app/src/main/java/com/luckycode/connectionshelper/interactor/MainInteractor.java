@@ -34,11 +34,14 @@ public class MainInteractor extends LuckyInteractor<SplashPresenter> {
     private SettingsManager settingsManager;
     private InteractorListener listener;
 
-    public MainInteractor(Context context, DatabaseHelper dbHelper, InteractorListener listener){
+    public MainInteractor(Context context, DatabaseHelper dbHelper){
         this.dbHelper=dbHelper;
         this.context=context;
-        this.listener=listener;
         settingsManager=new SettingsManager(context);
+    }
+
+    public void setListener(InteractorListener listener) {
+        this.listener = listener;
     }
 
     public void loadDatabaseData() {

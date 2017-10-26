@@ -7,6 +7,7 @@ import android.util.Log;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.model.LatLng;
 import com.luckycode.connectionshelper.common.LuckyPresenter;
+import com.luckycode.connectionshelper.interactor.MainInteractor;
 import com.luckycode.connectionshelper.interactor.MapInteractor;
 import com.luckycode.connectionshelper.model.Edge;
 import com.luckycode.connectionshelper.model.Graph;
@@ -27,9 +28,10 @@ public class MapPresenter extends LuckyPresenter<MapActivityView> implements Map
     private MapInteractor mapInteractor;
     private Graph graph;
 
-    public MapPresenter(Context context, MapActivityView mView, DatabaseHelper dbHelper, Graph graph) {
+    public MapPresenter(MapActivityView mView,Graph graph, MapInteractor interactor) {
         super(mView);
-        mapInteractor=new MapInteractor(context,dbHelper,this);
+        mapInteractor=interactor;
+        mapInteractor.setListener(this);
         this.graph=graph;
         this.graph.setListener(this);
     }
@@ -75,15 +77,16 @@ public class MapPresenter extends LuckyPresenter<MapActivityView> implements Map
         mapInteractor.getPlaceByID(placeAutocomplete,googleApiClient,population);
     }
 
-    private void sendMarkers(Set<TownVertex> vertexes){
-        for(TownVertex vertex:vertexes)
-            getView().drawMarker(new LatLng(vertex.getLat(),vertex.getLng()),vertex.getName());
+    public void sendMarkers(Set<TownVertex> vertexes){
+        for(TownVertex vertex:vertexes) {
+            getView().drawMarker(new LatLng(vertex.getLat(), vertex.getLng()), vertex.getName());
+        }
     }
 
-    private void sendRoutes(List<Edge> edges){
+    public void sendRoutes(List<Edge> edges){
         for(Edge edge:edges)
             getView().drawRoute(new LatLng(edge.getOrigin().getLat(), edge.getOrigin().getLng()), new LatLng(edge.
-                    getDestination().getLat(), edge.getDestination().getLng()), Color.YELLOW);
+                    getDestination().getLat(), edge.getDestination().getLng()), Color.BLUE);
     }
 
     private void sendRoutes(Set<Edge> edges){
@@ -111,14 +114,14 @@ public class MapPresenter extends LuckyPresenter<MapActivityView> implements Map
         Log.e("Something went ","wrong");
     }
 
-    public void onTextChanged(CharSequence s,int count){
-        if(count>0) {
+    public void onTextChanged(CharSequence s){
+        int textSize=s.length();
+        if(textSize>0){
             getView().showClearButton();
             getView().setAdapter();
+            getView().filter(s.toString());
         }else
             getView().hideClearButton();
-        if(s.toString()!="")
-            getView().filter(s.toString());
     }
 
     @Override

@@ -33,6 +33,12 @@ public class Edge implements Comparable<Edge>,Serializable{
         setWeight(normalCost,extraDiff,extraLargeDistance);
     }
 
+    public Edge(TownVertex origin,TownVertex destination,double weight){
+        this.origin=origin;
+        this.destination=destination;
+        this.weight=weight;
+    }
+
     public double getDistanceInKms() {
         return SimpleLocation.calculateDistance(origin.getLat(),origin.getLng(),
                 destination.getLat(),destination.getLng())/1000;
@@ -43,7 +49,7 @@ public class Edge implements Comparable<Edge>,Serializable{
     }
 
     public boolean distanceIsGreaterThan200(){
-        return getDistanceInKms()>200;
+        return getDistanceInKms()>200.0;
     }
 
     public void setWeight(double normalCost,double extraDiff,double extraLargeDistance){
@@ -79,6 +85,10 @@ public class Edge implements Comparable<Edge>,Serializable{
         return (int)(this.weight - e.weight);
     }
 
+    public void setWeight(double weight){
+        this.weight=weight;
+    }
+
     public double getWeight() {
         return weight;
     }
@@ -91,4 +101,11 @@ public class Edge implements Comparable<Edge>,Serializable{
         return origin;
     }
 
+    public void setOrigin(TownVertex origin) {
+        this.origin = origin;
+    }
+
+    public void setDestination(TownVertex destination) {
+        this.destination = destination;
+    }
 }

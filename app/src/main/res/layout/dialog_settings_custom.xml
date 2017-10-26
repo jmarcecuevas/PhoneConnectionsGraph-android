@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:id="@+id/betweenTwoCitiesTV"
-            android:text="Entre dos localidades(por km)"
+            android:text="Entre dos ciudades(por km)"
             android:layout_below="@+id/title"
             android:layout_alignParentStart="true" />
 
@@ -46,7 +46,7 @@
             android:id="@+id/differentCitiesTV"
             android:paddingTop="10dp"
             android:layout_below="@+id/betweenTwoCitiesTV"
-            android:text="Adicional para localidades de distintos paises"/>
+            android:text="Adicional para ciudades de distintos paises"/>
 
         <EditText
             android:layout_width="wrap_content"
